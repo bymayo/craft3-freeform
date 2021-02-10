@@ -61,6 +61,10 @@ class FilesService extends BaseService implements FileUploadHandlerInterface
             return null;
         }
 
+        if (!is_countable($_FILES[$field->getHandle()]['name'])) {
+            return null;
+        }
+
         $uploadedFileCount = \count($_FILES[$field->getHandle()]['name']);
 
         $beforeUploadEvent = new UploadEvent($field);
@@ -205,7 +209,7 @@ class FilesService extends BaseService implements FileUploadHandlerInterface
             ->from(UnfinalizedFileRecord::TABLE)
             ->where(
                 '{{%freeform_unfinalized_files}}.[[dateCreated]] < :now',
-                ['now' => $date->format(DATE_ATOM)]
+                ['now' => $date->format(\DATE_ATOM)]
             )
             ->column()
         ;

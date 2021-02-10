@@ -165,7 +165,7 @@ class FileUploadField extends AbstractField implements MultipleValueInterface, F
                 $_FILES[$this->handle]['type'] = [$_FILES[$this->handle]['type']];
             }
 
-            if ($exists && $_FILES[$this->handle]['name'][0]) {
+            if ($exists && is_countable($_FILES[$this->handle]['name'])) {
                 $fileCount = \count($_FILES[$this->handle]['name']);
 
                 if ($fileCount > $this->getFileCount()) {
@@ -176,13 +176,18 @@ class FileUploadField extends AbstractField implements MultipleValueInterface, F
                 }
 
                 foreach ($_FILES[$this->handle]['name'] as $index => $name) {
-                    $extension = pathinfo($name, PATHINFO_EXTENSION);
+                    $extension = pathinfo($name, \PATHINFO_EXTENSION);
                     $validExtensions = $this->getValidExtensions();
 
-                    // Check the mime type if the server supports it
-                    if (FileHelper::isMimeTypeCheckEnabled()) {
-                        $tmpName = $_FILES[$this->handle]['tmp_name'][$index];
+                    $tmpName = $_FILES[$this->handle]['tmp_name'][$index];
+                    $errorCode = $_FILES[$this->handle]['error'][$index];
 
+                    if (empty($tmpName) && \UPLOAD_ERR_NO_FILE === $errorCode) {
+                        continue;
+                    }
+
+                    // Check the mime type if the server supports it
+                    if (FileHelper::isMimeTypeCheckEnabled() && !empty($tmpName)) {
                         $mimeType = FileHelper::getMimeType($tmpName);
                         $mimeExtension = FileHelper::getExtensionByMimeType($mimeType);
 
@@ -195,17 +200,15 @@ class FileUploadField extends AbstractField implements MultipleValueInterface, F
                         }
                     }
 
-                    if (empty($_FILES[$this->handle]['tmp_name'][$index])) {
-                        $errorCode = $_FILES[$this->handle]['error'][$index];
-
+                    if (empty($tmpName)) {
                         switch ($errorCode) {
-                            case UPLOAD_ERR_INI_SIZE:
-                            case UPLOAD_ERR_FORM_SIZE:
+                            case \UPLOAD_ERR_INI_SIZE:
+                            case \UPLOAD_ERR_FORM_SIZE:
                                 $uploadErrors[] = $this->translate('File size too large');
 
                                 break;
 
-                            case UPLOAD_ERR_PARTIAL:
+                            case \UPLOAD_ERR_PARTIAL:
                                 $uploadErrors[] = $this->translate('The file was only partially uploaded');
 
                                 break;

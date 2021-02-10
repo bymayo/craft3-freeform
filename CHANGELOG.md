@@ -1,5 +1,40 @@
 # Solspace Freeform Changelog
 
+## 3.10.7 - 2021-02-08
+
+### Added
+- Added ability to include Payment info when exporting submission data.
+
+### Fixed
+- Fixed a bug where Purge Submissions jobs would fail due to an issue with Guzzle 7.x on Craft 3.6.x.
+- Fixed a bug where the datepicker JS would load on all Date/Time fields regardless of their setting for using the built-in datepicker JS.
+
+## 3.10.6 - 2021-02-04
+
+### Fixed
+- Fixed a bug where non-AJAX forms with an empty file upload field would trigger an error.
+
+## 3.10.5 - 2021-02-02
+
+### Added
+- Added support for Birthday field types in the MailChimp mailing list integration.
+
+### Fixed
+- Fixed a bug where adding the sample formatting template through the CP was not working correctly.
+- Fixed a bug where the "Conditional Rules" editor in CP form builder would run off the screen on smaller screens.
+- Fixed a bug where File Upload fields might log errors in some rare cases.
+- Fixed an issue where the "What's New" dashboard feature could skip some updates that might be relevant in the future.
+
+## 3.10.4 - 2021-01-26
+
+### Added
+- Added a way to conveniently get a reCAPTCHA v2 Checkbox field instance from a manually constructed form with `form.get('recaptcha')`.
+
+## 3.10.3 - 2021-01-22
+
+### Fixed
+- Fixed a bug in the Export Profiles migration that prevented updating profiles with no date ranges set.
+
 ## 3.10.2.1 - 2021-01-18
 
 ### Fixed
