@@ -10,10 +10,10 @@ use Solspace\Freeform\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Freeform\Library\Integrations\IntegrationStorageInterface;
 use Solspace\Freeform\Library\Integrations\SettingBlueprint;
 
-class PardotOAuth extends CRMOAuthConnector
+class PardotV5 extends CRMOAuthConnector
 {
-    const TITLE = 'Pardot (OAuth)';
-    const LOG_CATEGORY = 'Pardot';
+    const TITLE = 'Pardot v5';
+    const LOG_CATEGORY = 'PardotV5';
 
     const SETTING_BUSINESS_UNIT_ID = 'business_unit_id';
     const SETTING_REFRESH_TOKEN = 'refresh_token';
