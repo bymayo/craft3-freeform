@@ -1,0 +1,21 @@
+{% extends "freeform-demo/_layout" %}
+{% set pageTitle = "Extras" %}
+{% set page = "extras" %}
+
+{% block content %}
+
+    <div class="container">
+        {{ craft.freeform.form("extraDemo", {
+            labelClass: "form-label",
+            inputClass: "form-control",
+            overrideValues: {
+                firstName: currentUser.firstName,
+                lastName: currentUser.lastName,
+                state: "CA",
+                email: currentUser.email,
+                website: "https://solspace.com",
+            }
+        }).render() }}
+    </div>
+
+{% endblock %}

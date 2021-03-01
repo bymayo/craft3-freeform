@@ -1,0 +1,16 @@
+{% extends "demo/_layout" %}
+
+{% set pageTitle = "Bootstrap" %}
+{% set page = "bootstrap" %}
+
+{% set formHandle = craft.app.request.segment(3) %}
+{% set isSuccess  = craft.app.request.segment(4) == "success" %}
+{% set form = craft.freeform.form(formHandle) %}
+
+{% block content %}
+
+    <div class="container">
+        {% include "demo/bootstrap/_form" with { formHandle: formHandle } %}
+    </div>
+
+{% endblock %}

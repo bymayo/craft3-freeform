@@ -1,0 +1,106 @@
+{% extends "demo/_layout" %}
+
+{% set pageTitle = "Bootstrap" %}
+{% set page = "bootstrap" %}
+
+{% set segment1 = craft.app.request.segment(1) %}
+{% set segment2 = craft.app.request.segment(2) %}
+{% set segment3 = craft.app.request.segment(3) %}
+{% set segment4 = craft.app.request.segment(4) %}
+
+{% block content %}
+
+    <div class="container">
+        <ul>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/current-user-data/">Current User Data example</a>
+                This example populates a form with some User account values from the currently logged in user.
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/craft-entry-data/">craft-entry-data</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/delivery-date/">delivery-date</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/div-success/">div-success</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/edit-submissions/">edit-submissions</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/js-override/">js-override</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/manual-form/">manual-form</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/multi-page/">multi-page</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/multiple-forms/">multiple-forms</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/parsley/">parsley</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/populate-field/">populate-field</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/relating-submission/">relating-submission</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/render-form/">render-form</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/return-url-form/">return-url-form</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/submit-same-page/">submit-same-page</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/template-success">template-success</a>
+            </li>
+            <li>
+                <a href="{{ siteUrl }}demo/extras/twig-cache">twig-cache</a>
+            </li>
+        </ul>
+    </div>
+
+{#
+1. A template that includes more than 1 form in it (using 'render') and shows some overrides that apply to all forms (example overrides like changing the success and fail messages)
+2. Simple multi-page form manually coded inside template (showing the iterating through pages)
+3. Simple form page (render) with JS overrides handling
+4. Simple form page with alternate form validation such as Parsley
+   - https://docs.solspace.com/craft/freeform/v3/guides/form-validation-with-parsley.html
+5. Example of a template including a Craft Entry and using that data to populate some of a simple form's fields (render) with some of the Craft Entry data.
+   - https://docs.solspace.com/craft/freeform/v3/guides/passing-dynamic-data-to-forms.html
+6. Example of a simple form (mostly render / loop through other fields) that has 1 field (a Select dropdown) manipulated to be fed option data at template level.
+   - https://docs.solspace.com/craft/freeform/v3/guides/populate-field-options-at-template-level.html
+7. Simple render form that returns to the same page (non AJAX)
+   - https://docs.solspace.com/craft/freeform/v3/guides/return-same-page.html
+8. A page that includes a simple form (render) that replaces the form with a `div` success / message (AJAX forms).
+   - https://docs.solspace.com/craft/freeform/v3/guides/ajax-return-loads-success.html
+9. A page that includes a simple form (render) that replaces the form with a template based success / message (AJAX forms).
+   - https://docs.solspace.com/craft/freeform/v3/guides/ajax-return-loads-success.html
+10. A basic manual form (can almost just get away with copying and pasting the example here:
+   - https://docs.solspace.com/craft/freeform/v3/template-functions/freeform.form.html#manual-rendering-of-forms
+11. A simple 'render' form that suppresses notifications, etc.
+   - https://docs.solspace.com/craft/freeform/v3/template-functions/freeform.form.html#supressing-notifications-and-more
+12. Submissions list example that includes searching:
+   - https://docs.solspace.com/craft/freeform/v3/template-functions/freeform.submissions.html#searching-example
+13. Cached form example (prob stick to cache twig tag approach for now)
+   - https://docs.solspace.com/craft/freeform/v3/templating/caching.html
+   - https://docs.solspace.com/craft/freeform/v3/templating/caching.html#refresh-form-hash-js-honeypot-csrf-token
+14. Basic render form with a Date field type in it, overridden by some stuff noted in the docs here:
+   - https://docs.solspace.com/craft/freeform/v3/developer/datepicker.html
+   - https://docs.solspace.com/craft/freeform/v3/developer/datepicker-v3-10.html (use this URL for reference until new 3.10 page becomes the default one)
+15. Basic render form showing how to relate that submission to another craft element (Craft Entry)
+   - https://docs.solspace.com/craft/freeform/v3/overview/relations.html
+16. A template that shows how the template code should look when including a Freeform Form fieldtype inside a Craft Entry.
+   - https://docs.solspace.com/craft/freeform/v3/overview/fieldtypes.html
+17. A basic manual ish form that includes a `formReturnUrl` field as a select dropdown to allow the user to control where the form returns to upon success. Essentially needs to include something like this:
+   `<input type="checkbox" name="formReturnUrl" value="{{ 'whatever/my-url'|hash }}" />`
+   #}
+
+{% endblock %}
