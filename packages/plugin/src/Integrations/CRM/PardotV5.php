@@ -27,6 +27,12 @@ class PardotV5 extends CRMOAuthConnector
             [
                 new SettingBlueprint(
                     SettingBlueprint::TYPE_TEXT,
+                    self::SETTING_BUSINESS_UNIT_ID,
+                    'Business Unit ID',
+                    'Enter your Pardot Business Unit ID here'
+                ),
+                new SettingBlueprint(
+                    SettingBlueprint::TYPE_TEXT,
                     self::SETTING_USERNAME,
                     'Pardot username',
                     'Enter your Pardot username here',
