@@ -1,20 +1,62 @@
 {% extends "freeform-demo/_layout" %}
 
-{% set pageTitle = "Custom" %}
-{% set page = "Custom" %}
+{% set pageTitle = "Extras" %}
+{% set page = "extras" %}
+
+{# Replace "relatingSubmission" with your form handle. #}
+{% set form = craft.freeform.form("relatingSubmission") %}
 
 {% block content %}
-    <h1> Render basic submission form in the craft element<h1>
-    
-    <br>{% set  entry = craft.entries.one %}
-    <h2>{{ entry.title }}</h2>
-    <p>Posted on {{ entry.postDate.format('d.m.Y') }}</p>
-    <p>{{ entry.id }}</p>
 
-    {{ craft.freeform.form("productReviewsForm").render({
-        relations: {
-            productReviews: entry.fields,
-        },
-    }) }}
+<div class="container">
+
+    <h2>Relating Submissions to Elements</h2>
+    <p>The example pairing the Freeform Submissions element fieldtype with the relations parameter in the freeform.form function</p>
+    <hr />
+
+    {% if form %}
+
+        <h3>{{ form.name }}</h3>
+        <br />
+
+        <br>{% set  entry = craft.entries.one %}
+        <h2>{{ entry.title }}</h2>
+        <p>Posted on {{ entry.postDate.format('F d, Y') }}</p>
+        <p>{{ entry.id }}</p>
+
+        {# Replace "relatingSubmissions" with your form handle. #}
+        {{ craft.freeform.form("productReviewsForm").render({
+            relations: {
+                productReviews: entry.id,
+            },
+        }) }}
+
+    {% else %}
+    {# Show instructions to developer if they wish to see this page work correctly #}
+
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">You can't see this page correctly until...</h4>
+            <p class="mb-0">
+                In order to view this page live, you'll need to make some adjustments to this template or your test form:
+                <ol class="mb-0">
+                    <li>Rename your test form handle to <code>relatingSubmission</code> (or adjust the handle name this template is looking for).</li>
+                    <li>
+                        Make sure your test form includes the following fields (at minimum):
+                        <ul>
+                            <li>User Name text field with handle of <code>userName</code>.</li>
+                            <li>Last Name text field with handle of <code>lastName</code>.</li>
+                            <li>Email address field with handle of  <code>email</code>.</li>
+                        </ul>
+                    </li>
+                    <li>The person viewing this form is logged into their Craft account to see this working.</li>
+                    <li>The person viewing this form have a first and last name set in their User account.</li>
+                </ol>
+            </p>
+        </div>
+
+    {% endif %}
+
+</div>
 
 {% endblock %}
+
