@@ -440,7 +440,7 @@ class PropertyBase extends AbstractSalesforceIntegration
             $opportunityMapping['pba__Account__c'] = $accountId; // Required
             $opportunityMapping['pba__Contact__c'] = $contactId; // Required
             $opportunityMapping['Lead_Source__c'] = $contactMapping['LeadSource']; // Required
-            $opportunityMapping['pba__Comments__c'] = $contactMapping['pba__Comment_pb__c'] ?? '';
+            $opportunityMapping['pba__Comments__c'] = isset($contactMapping['pba__Comment_pb__c']) ? $contactMapping['pba__Comment_pb__c'] : '';
 
             // Remove fields that dont exist in PB Enquiries
             unset($opportunityMapping['Description']);
