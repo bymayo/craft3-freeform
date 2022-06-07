@@ -412,9 +412,11 @@ class PropertyBase extends AbstractSalesforceIntegration
                 $this->getHandler()->onAfterResponse($this, $accountResponse);
             }
 
-            $this->getLogger()->error($response->getStatusCode(), ['exception' => $response->getStatusCode()]);
+            // $this->getLogger()->error($response->getStatusCode(), ['exception' => $response->getStatusCode()]);
 
             $contactMapping['AccountId'] = $accountId;
+
+            // @TODO: Check something here to check if account exists
 
             if ($contactRecord) {
                 // We'll prepare appendable values
