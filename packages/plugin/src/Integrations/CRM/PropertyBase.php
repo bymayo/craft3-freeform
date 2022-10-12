@@ -24,6 +24,8 @@ use Solspace\Freeform\Library\Integrations\DataObjects\FieldObject;
 use Solspace\Freeform\Library\Integrations\IntegrationStorageInterface;
 use Solspace\Freeform\Library\Integrations\SettingBlueprint;
 
+use modules\businesslogic\BusinessLogic;
+
 class PropertyBase extends AbstractSalesforceIntegration
 {
     const TITLE = 'Propertybase';
@@ -395,6 +397,7 @@ class PropertyBase extends AbstractSalesforceIntegration
         }
 
         try {
+
             if ($accountRecord) {
                 // We'll prepare appendable values
                 if ($isAppendAccountData) {
@@ -412,11 +415,18 @@ class PropertyBase extends AbstractSalesforceIntegration
                 $this->getHandler()->onAfterResponse($this, $accountResponse);
             }
 
-            // $this->getLogger()->error($response->getStatusCode(), ['exception' => $response->getStatusCode()]);
-
             $contactMapping['AccountId'] = $accountId;
 
-            // @TODO: Check something here to check if account exists
+            // Remove fields that dont exist in PB Enquiries
+            unset($opportunityMapping['Description']);
+            unset($opportunityMapping['LeadSource']);
+            unset($opportunityMapping['Name']);
+
+            // $opportunityMapping['CloseDate'] = $closeDate->toIso8601ZuluString();
+            // $opportunityMapping['AccountId'] = $accountId;
+            // $opportunityMapping['StageName'] = $this->getSetting(self::SETTING_STAGE);
+
+            // $opportunityMapping['contact___Create_Enquiry__c'] = false; // Required
 
             if ($contactRecord) {
                 // We'll prepare appendable values
@@ -428,31 +438,36 @@ class PropertyBase extends AbstractSalesforceIntegration
                 $response = $client->patch($contactEndpoint, ['json' => $contactMapping]);
                 $contactId = $contactRecord->Id;
                 $this->getHandler()->onAfterResponse($this, $response);
+
+                // If Contact exists, create Enquiry
+
+                // BusinessLogic::log('Contact Record Exists');
+
+                $opportunityMapping['pba__Account__c'] = $accountId; // Required
+                $opportunityMapping['pba__Contact__c'] = $contactId; // Required
+                $opportunityMapping['Lead_Source__c'] = $contactMapping['LeadSource']; // Required
+                $opportunityMapping['pba__Comments__c'] = isset($contactMapping['pba__Comment_pb__c']) ? $contactMapping['pba__Comment_pb__c'] : '';
+
+                $response = $client->post($this->getEndpoint('/sobjects/pba__Request__c'), ['json' => $opportunityMapping]);
+                $this->getHandler()->onAfterResponse($this, $response);
+    
+                return 201 === $response->getStatusCode();
+
             } else {
+
+                // If Contact exists, don't create Enquiry
+
+                // BusinessLogic::log('Contact Record Does Not Exist');
+
                 $contactEndpoint = $this->getEndpoint('/sobjects/Contact');
                 $response = $client->post($contactEndpoint, ['json' => $contactMapping]);
                 $contactId = json_decode($response->getBody())->id;
                 $this->getHandler()->onAfterResponse($this, $response);
+
+                return 201 === $response->getStatusCode();
+
             }
 
-            // $opportunityMapping['CloseDate'] = $closeDate->toIso8601ZuluString();
-            // $opportunityMapping['AccountId'] = $accountId;
-            // $opportunityMapping['StageName'] = $this->getSetting(self::SETTING_STAGE);
-
-            $opportunityMapping['pba__Account__c'] = $accountId; // Required
-            $opportunityMapping['pba__Contact__c'] = $contactId; // Required
-            $opportunityMapping['Lead_Source__c'] = $contactMapping['LeadSource']; // Required
-            $opportunityMapping['pba__Comments__c'] = isset($contactMapping['pba__Comment_pb__c']) ? $contactMapping['pba__Comment_pb__c'] : '';
-
-            // Remove fields that dont exist in PB Enquiries
-            unset($opportunityMapping['Description']);
-            unset($opportunityMapping['LeadSource']);
-            unset($opportunityMapping['Name']);
-
-            $response = $client->post($this->getEndpoint('/sobjects/pba__Request__c'), ['json' => $opportunityMapping]);
-            $this->getHandler()->onAfterResponse($this, $response);
-
-            return 201 === $response->getStatusCode();
         } catch (RequestException $e) {
             $exceptionResponse = $e->getResponse();
             if (!$exceptionResponse) {
